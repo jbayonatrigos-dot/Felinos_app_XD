@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Felinos | Mundo Azul</title>
+  <style>
+    /* Reset y tipografía */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #cce0ff 0%, #99bbff 100%);
+      color: #0b2545;
+      line-height: 1.6;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px;
+      scroll-behavior: smooth;
+    }
+    a {
+      color: #3366cc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover, a:focus {
+      color: #0b2545;
+      outline: none;
+      text-decoration: underline;
+    }
+
+    /* Header */
+    header {
+      background: #003366;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    nav li {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    /* Main Content */
+    main section {
+      background: #f0f7ffcc;
+      border-radius: 15px;
+      padding: 25px 30px;
+      margin-bottom: 45px;
+      box-shadow: 0 6px 15px rgba(0, 51, 102, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    main section:focus-within,
+    main section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 51, 102, 0.3);
+      outline: none;
+    }
+    main h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #004080;
+      padding-bottom: 8px;
+      color: #002147;
+      letter-spacing: 1.2px;
+    }
+    main p {
+      font-size: 1.15rem;
+      margin-bottom: 18px;
+      text-align: justify;
+    }
+    main ul {
+      list-style: disc inside;
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+    main ul li {
+      margin-bottom: 10px;
+      padding-left: 5px;
+    }
+
+    /* Felino Cards Container */
+    .felino-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+    }
+    .felino-card {
+      background: #d9e6ff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 64, 128, 0.25);
+      width: 320px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .felino-card:focus-within,
+    .felino-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0, 64, 128, 0.5);
+      outline: none;
+    }
+    .felino-card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
+    }
+    .felino-card img:hover {
+      transform: scale(1.05);
+    }
+    .felino-card h3 {
+      color: #002147;
+      margin-bottom: 12px;
+      font-size: 1.5rem;
+      letter-spacing: 0.8px;
+    }
+    .felino-card p {
+      font-size: 1rem;
+      color: #0b2545cc;
+      margin-bottom: 10px;
+    }
+    .felino-card ul {
+      list-style: inside disc;
+      text-align: left;
+      color: #003366;
+      font-size: 0.95rem;
+      margin: 0;
+      padding-left: 15px;
+    }
+
+    /* Curiosidades acordeón */
+    .accordion {
+      max-width: 700px;
+      margin: auto;
+    }
+    .accordion button {
+      background: #004080;
+      color: white;
+      cursor: pointer;
+      padding: 15px 25px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion button:hover,
+    .accordion button:focus {
+      background-color: #00264d;
+      outline: none;
+    }
+    .accordion button .icon {
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    .accordion button.active .icon {
+      transform: rotate(45deg);
+    }
+    .accordion-content {
+      background: #cce0ff;
+      padding: 15px 25px;
+      border-radius: 0 0 12px 12px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      font-size: 1.1rem;
+      color: #003366;
+      margin-bottom: 15px;
+      box-shadow: inset 0 4px 8px rgba(0, 64, 128, 0.1);
+      user-select: text;
+    }
+    .accordion-content.show {
+      max-height: 300px;
+    }
+
+    /* Footer */
+    footer {
+      background: #002147;
+      color: #a8c4ff;
+      padding: 20px 15px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      margin-top: 60px;
+    }
+    footer p {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    footer a {
+      color: #99bbff;
+      margin: 0 10px;
+      font-size: 1.4rem;
+      vertical-align: middle;
+      transition: color 0.3s ease;
+    }
+    footer a:hover, footer a:focus {
+      color: white;
+      outline: none;
+    }
+
+    /* Botón volver arriba */
+    #topBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #004080;
+      border: none;
+      padding: 15px 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      color: white;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(0, 64, 128, 0.6);
+      opacity: 0.75;
+      transition: opacity 0.3s ease;
+      z-index: 150;
+    }
+    #topBtn:hover,
+    #topBtn:focus {
+      opacity: 1;
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .felino-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      main section {
+        padding: 20px;
+      }
+      header h1 {
+        font-size: 2.2rem;
+      }
+      nav ul {
+        gap: 25px;
+      }
+      .accordion button {
+        font-size: 1rem;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Felinos: Pasado y Presente</h1>
+    <nav aria-label="Menú principal">
+      <ul>
+        <li><a href="#actuales">Felinos Actuales</a></li>
+        <li><a href="#extintos">Felinos Extintos</a></li>
+        <li><a href="#curiosidades">Curiosidades</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Felinos actuales -->
+    <section id="actuales" tabindex="0" aria-labelledby="actuales-title">
+      <h2 id="actuales-title">Felinos Actuales</h2>
+      <p>
+        Los felinos actuales son parte fundamental de diversos ecosistemas alrededor del mundo. Se caracterizan por su agilidad, fuerza y elegancia. A continuación te presentamos información clave de varios felinos destacados:
+      </p>
+      <div class="felino-container">
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el León">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg" alt="León africano acostado" loading="lazy" />
+          <h3>León (<em>Panthera leo</em>)</h3>
+          <p><strong>Tamaño:</strong> Machos hasta 2.5 m de largo, peso hasta 250 kg.</p>
+          <p><strong>Hábitat:</strong> Sabana y praderas de África subsahariana y sur de Asia.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza herbívoros grandes como cebras y ñus.</p>
+          <p><strong>Datos clave:</strong> Viven en manadas dominadas por hembras; los machos protegen el territorio.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Tigre">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Tiger.50.jpg" alt="Tigre en la selva" loading="lazy" />
+          <h3>Tigre (<em>Panthera tigris</em>)</h3>
+          <p><strong>Tamaño:</strong> Hasta 3.3 m de largo, peso hasta 300 kg.</p>
+          <p><strong>Hábitat:</strong> Bosques tropicales y templados de Asia.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza ciervos, jabalíes y otros mamíferos.</p>
+          <p><strong>Datos clave:</strong> Solitario y territorial; excelente nadador.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Jaguar">
+          <img src="https://portal.andina.pe/EDPfotografia3/Thumbnail/2018/06/14/000511237W.jpg" alt="Jaguar en la selva" loading="lazy" />
+          <h3>Jaguar (<em>Panthera onca</em>)</h3>
+          <p><strong>Tamaño:</strong> Hasta 2 m de largo, peso hasta 100 kg.</p>
+          <p><strong>Hábitat:</strong> Selvas tropicales y zonas pantanosas de América Central y del Sur.</p>
+          <p><strong>Dieta:</strong> Carnívoro; depreda capibaras, caimanes y peces.</p>
+          <p><strong>Datos clave:</strong> Fuerte mordida capaz de perforar caparazones de tortugas.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Leopardo">
+          <img src="https://images.unsplash.com/photo-1599886964275-41dac3b442c4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Leopardo en árbol" loading="lazy" />
+          <h3>Leopardo (<em>Panthera pardus</em>)</h3>
+          <p><strong>Tamaño:</strong> Hasta 2 m de largo, peso hasta 90 kg.</p>
+          <p><strong>Hábitat:</strong> Bosques, sabanas y montañas en África y Asia.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza mamíferos pequeños y medianos.</p>
+          <p><strong>Datos clave:</strong> Excelente trepador; guarda sus presas en árboles para evitar carroñeros.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Guepardo">
+          <img src="https://billiken.lat/wp-content/uploads/2023/02/21_guepardo.webp" alt="Guepardo corriendo" loading="lazy" />
+          <h3>Guepardo (<em>Acinonyx jubatus</em>)</h3>
+          <p><strong>Tamaño:</strong> 1.1 - 1.5 m de largo, peso 35-65 kg.</p>
+          <p><strong>Hábitat:</strong> Sabana africana y algunas regiones de Irán.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza gacelas y otros animales pequeños y rápidos.</p>
+          <p><strong>Datos clave:</strong> Felino más rápido, alcanzando hasta 112 km/h en cortas distancias.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Lince europeo">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReAEUwLmC5OoPwtm_JiONUlJJQaCNz6YsqOz_gjr5iVJYhUrT2dIHqCq7h7Vl124SKQOQ&usqp=CAU" alt="Lince europeo en bosque" loading="lazy" />
+          <h3>Lince europeo (<em>Lynx lynx</em>)</h3>
+          <p><strong>Tamaño:</strong> Hasta 1.3 m de largo, peso 18-30 kg.</p>
+          <p><strong>Hábitat:</strong> Bosques templados de Europa y Asia.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza ciervos pequeños, liebres y aves.</p>
+          <p><strong>Datos clave:</strong> Orejas con mechones negros; muy sigiloso y solitario.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Puma">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2Lor_i31GfhPkMdm1Oy6IPr8jq2Js7-9nvw&s" alt="Puma en naturaleza" loading="lazy" />
+          <h3>Puma (<em>Puma concolor</em>)</h3>
+          <p><strong>Tamaño:</strong> 1.5-2.4 m de largo, peso 40-90 kg.</p>
+          <p><strong>Hábitat:</strong> Desde Canadá hasta el sur de Sudamérica en variados ecosistemas.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza ciervos, conejos y otros mamíferos.</p>
+          <p><strong>Datos clave:</strong> Muy adaptable y oportunista; buen saltador y trepador.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Caracal">
+          <img src="https://www.anipedia.net/imagenes/caracal.jpg" alt="Caracal en la naturaleza" loading="lazy" />
+          <h3>Caracal (<em>Caracal caracal</em>)</h3>
+          <p><strong>Tamaño:</strong> 40-50 cm de alto, 60-95 cm de largo, peso 8-19 kg.</p>
+          <p><strong>Hábitat:</strong> Zonas áridas y sabanas de África, Medio Oriente e India.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza aves y pequeños mamíferos.</p>
+          <p><strong>Datos clave:</strong> Orejas con mechones largos; puede cazar aves en vuelo con saltos sorprendentes.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Gato montés">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Felis_silvestris_Kocka_divok%C3%A1_zoo_cropped.jpg/640px-Felis_silvestris_Kocka_divok%C3%A1_zoo_cropped.jpg" alt="Gato montés en bosque" loading="lazy" />
+          <h3>Gato montés (<em>Felis silvestris</em>)</h3>
+          <p><strong>Tamaño:</strong> 45-90 cm de largo, peso 3-8 kg.</p>
+          <p><strong>Hábitat:</strong> Bosques y zonas rurales de Europa, África y Asia.</p>
+          <p><strong>Dieta:</strong> Carnívoro, caza pequeños roedores, aves y reptiles.</p>
+          <p><strong>Datos clave:</strong> Solitario y muy territorial; antecesor del gato doméstico.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Felinos extintos -->
+    <section id="extintos" tabindex="0" aria-labelledby="extintos-title">
+      <h2 id="extintos-title">Felinos Extintos</h2>
+      <p>
+        A lo largo de la historia, varias especies de felinos se han extinguido, dejando un legado fascinante. Aquí te mostramos algunos ejemplares importantes:
+      </p>
+      <div class="felino-container">
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Smilodon">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTn29aMzPHtpbbUMaFKVzn1xw-7oGkVxAvCA&s" alt="Réconstrucción de Smilodon" loading="lazy" />
+          <h3>Smilodon (<em>Smilodon fatalis</em>)</h3>
+          <p><strong>Tamaño:</strong> 1.5-2 m de largo, peso hasta 300 kg.</p>
+          <p><strong>Época:</strong> Pleistoceno, hasta hace ~10,000 años.</p>
+          <p><strong>Dieta:</strong> Carnívoro, depredador de grandes mamíferos como bisontes y camellos.</p>
+          <p><strong>Datos clave:</strong> Conocido como "tigre dientes de sable" por sus colmillos enormes y curvados.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Homotherium">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEs2i66QLmn6kyLFXLy8SEhjbYHuwnWSEyTUp8ze38PR1MLuM3k1dHuiB3292Ql5S-Izs&usqp=CAU" alt="Ilustración de Homotherium" loading="lazy" />
+          <h3>Homotherium (<em>Homotherium serum</em>)</h3>
+          <p><strong>Tamaño:</strong> Similar a un león grande, peso 150-200 kg.</p>
+          <p><strong>Época:</strong> Pleistoceno, hace 2.5 millones a 10,000 años.</p>
+          <p><strong>Dieta:</strong> Carnívoro, cazador de herbívoros grandes.</p>
+          <p><strong>Datos clave:</strong> Dientes de sable menos exagerados que Smilodon; cazador activo y rápido.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Panthera leo spelaea">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJsCEMZEOAKS_AnhM1vyCBWUadsHgtXgv7MQ&s" alt="Esqueleto de león cavernario" loading="lazy" />
+          <h3>León cavernario (<em>Panthera leo spelaea</em>)</h3>
+          <p><strong>Tamaño:</strong> Similar al león moderno, pero más robusto.</p>
+          <p><strong>Época:</strong> Pleistoceno, hace aproximadamente 300,000 a 10,000 años.</p>
+          <p><strong>Dieta:</strong> Carnívoro, depredador de grandes mamíferos de la era glacial.</p>
+          <p><strong>Datos clave:</strong> Vivió en Europa y Asia; conocido por habitar cuevas.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Machairodus">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWcg83CmnlCukFB33FsHR7YYDpqIQlOgDUhw&s" alt="Reconstrucción de Machairodus" loading="lazy" />
+          <h3>Machairodus</h3>
+          <p><strong>Tamaño:</strong> Similar a un león grande, hasta 300 kg.</p>
+          <p><strong>Época:</strong> Mioceno a Plioceno.</p>
+          <p><strong>Dieta:</strong> Carnívoro, cazador de grandes herbívoros.</p>
+          <p><strong>Datos clave:</strong> Felino dientes de sable muy robusto y con colmillos largos.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre el Xenosmilus">
+          <img src="https://flighttowonder.com/wp-content/uploads/2025/07/xenosmilus_with_concealed_canine.jpg" alt="Reconstrucción de Xenosmilus" loading="lazy" />
+          <h3>Xenosmilus</h3>
+          <p><strong>Tamaño:</strong> Similar a un jaguar grande.</p>
+          <p><strong>Época:</strong> Pleistoceno.</p>
+          <p><strong>Dieta:</strong> Carnívoro, cazador con dientes de sable.</p>
+          <p><strong>Datos clave:</strong> Poseía dientes cortos y robustos, diseñado para morder profundamente y desgarrar carne.</p>
+        </article>
+
+        <article class="felino-card" tabindex="0" aria-label="Información sobre Acinonyx pardinensis">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5jhT7tmEw5Qg374a8ppivAuzWFLh-80bJ-w&s" alt="Reconstrucción de Acinonyx pardinensis" loading="lazy" />
+          <h3>Acinonyx pardinensis</h3>
+          <p><strong>Tamaño:</strong> Más grande que el guepardo actual, hasta 90 kg.</p>
+          <p><strong>Época:</strong> Pleistoceno medio.</p>
+          <p><strong>Dieta:</strong> Carnívoro, cazaba presas rápidas.</p>
+          <p><strong>Datos clave:</strong> Pariente extinto del guepardo, con adaptaciones para la velocidad.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Curiosidades -->
+    <section id="curiosidades" tabindex="0" aria-labelledby="curiosidades-title">
+      <h2 id="curiosidades-title">Curiosidades sobre los Felinos</h2>
+      <div class="accordion">
+        <button aria-expanded="false" aria-controls="c1" id="btn-c1">
+          ¿Por qué los felinos ronronean? <span class="icon">+</span>
+        </button>
+        <div class="accordion-content" id="c1" role="region" aria-labelledby="btn-c1">
+          <p>El ronroneo se utiliza para comunicar tranquilidad, felicidad o para calmarse a sí mismos. También puede ayudar en la curación de huesos y tejidos debido a las vibraciones.</p>
+        </div>
+
+        <button aria-expanded="false" aria-controls="c2" id="btn-c2">
+          ¿Cuál es el felino más rápido? <span class="icon">+</span>
+        </button>
+        <div class="accordion-content" id="c2" role="region" aria-labelledby="btn-c2">
+          <p>El guepardo es el felino más rápido, alcanzando velocidades de hasta 112 km/h en distancias cortas de hasta 500 metros.</p>
+        </div>
+
+        <button aria-expanded="false" aria-controls="c3" id="btn-c3">
+          ¿Cómo cazan los felinos dientes de sable? <span class="icon">+</span>
+        </button>
+        <div class="accordion-content" id="c3" role="region" aria-labelledby="btn-c3">
+          <p>Se cree que usaban sus colmillos largos para infligir heridas profundas en el cuello o la garganta de sus presas, causando una muerte rápida por pérdida de sangre o asfixia.</p>
+        </div>
+
+        <button aria-expanded="false" aria-controls="c4" id="btn-c4">
+          ¿Los felinos domésticos descienden de felinos salvajes? <span class="icon">+</span>
+        </button>
+        <div class="accordion-content" id="c4" role="region" aria-labelledby="btn-c4">
+          <p>Sí, los gatos domésticos descienden del gato montés africano (<em>Felis silvestris lybica</em>), domesticado hace aproximadamente 9,000 años en el Medio Oriente.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button id="topBtn" aria-label="Volver arriba" title="Volver arriba">↑</button>
+
+  <footer>
+    <p>© 2025 Mundo Azul - Felinos Pasado y Presente</p>
+    <p>
+      <a href="https://es.wikipedia.org/wiki/Felinos" target="_blank" rel="noopener noreferrer" aria-label="Ir a Wikipedia sobre Felinos">Wikipedia</a> |
+      <a href="https://www.nationalgeographic.com/animals/mammals/facts/big-cats" target="_blank" rel="noopener noreferrer" aria-label="Ir a National Geographic sobre grandes felinos">National Geographic</a>
+    </p>
+  </footer>
+
+  <script>
+    // Acordeón
+    const accordionButtons = document.querySelectorAll('.accordion button');
+    accordionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', !expanded);
+        const content = document.getElementById(button.getAttribute('aria-controls'));
+        content.classList.toggle('show');
+        button.classList.toggle('active');
+      });
+    });
+
+    // Botón volver arriba
+    const topBtn = document.getElementById('topBtn');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topBtn.style.display = 'block';
+      } else {
+        topBtn.style.display = 'none';
+      }
+    });
+    topBtn.style.display = 'none';
+    topBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+  <script>
+  let lastScrollTop = 0;
+  const header = document.querySelector('header');
+
+  window.addEventListener('scroll', function () {
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    // Si hemos desplazado hacia abajo
+    if (currentScroll > lastScrollTop) {
+      header.style.top = "-120px";  // Oculta el header (ajusta el valor según el tamaño de tu header)
+    } else {
+      header.style.top = "0";  // Muestra el header
+    }
+    
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Para no tener valores negativos
+  });
+</script>
+</body>
+</html>
